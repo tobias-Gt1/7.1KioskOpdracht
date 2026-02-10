@@ -14,11 +14,7 @@
 
 body.kiosk-start {
   margin: 0;
-  background: linear-gradient(
-    180deg,
-    var(--light-green) 0%,
-    var(--green) 100%
-  );
+  background: linear-gradient(180deg, var(--light-green) 0%, var(--green) 100%);
   color: var(--dark-blue);
   font-family:
     system-ui,
@@ -68,8 +64,7 @@ body.kiosk-start {
   width: clamp(180px, 42vw, 360px);
   height: auto;
   display: block;
-  filter:
-    drop-shadow(0 12px 30px rgba(5, 54, 49, 0.20))
+  filter: drop-shadow(0 12px 30px rgba(5, 54, 49, 0.2))
     drop-shadow(0 2px 6px rgba(222, 255, 120, 0.25));
 }
 
@@ -89,6 +84,70 @@ body.kiosk-start {
   }
 }
 
+@media (min-width: 1024px) {
+  .logo-image {
+    width: clamp(220px, 28vw, 480px);
+  }
+
+  .actions {
+    max-width: 900px;
+    gap: 24px;
+  }
+
+  .action-btn {
+    height: 120px;
+    padding: 28px;
+    border-radius: 20px;
+    font-size: clamp(22px, 1.8vw, 40px);
+  }
+}
+
+@media (min-width: 1600px) {
+  .logo-image {
+    width: clamp(260px, 24vw, 560px);
+  }
+
+  .actions {
+    max-width: 1100px;
+  }
+
+  .action-btn {
+    height: 140px;
+    padding: 32px;
+    border-radius: 24px;
+    font-size: clamp(24px, 1.5vw, 44px);
+  }
+}
+
+@media (max-height: 640px) {
+  .actions {
+    padding-bottom: clamp(16px, 4vh, 48px);
+  }
+
+  .action-btn {
+    height: 80px;
+    padding: 18px;
+    font-size: clamp(16px, 2.4vw, 24px);
+    border-radius: 14px;
+  }
+
+  .logo-image {
+    width: clamp(140px, 36vw, 260px);
+  }
+}
+
+@media (orientation: portrait) and (min-height: 900px) {
+  .actions {
+    gap: 20px;
+  }
+
+  .action-btn {
+    height: 120px;
+    font-size: clamp(22px, 3.2vw, 38px);
+    padding: 26px;
+  }
+}
+
 .action-btn {
   flex: 1;
   padding: 24px;
@@ -103,7 +162,7 @@ body.kiosk-start {
     box-shadow 160ms ease,
     filter 160ms ease;
   box-shadow:
-    0 6px 12px rgba(5, 54, 49, 0.10),
+    0 6px 12px rgba(5, 54, 49, 0.1),
     0 20px 40px rgba(5, 54, 49, 0.18);
 }
 
@@ -120,7 +179,7 @@ body.kiosk-start {
   background: var(--orange);
   color: #fff;
   box-shadow:
-    0 8px 16px rgba(5, 54, 49, 0.10),
+    0 8px 16px rgba(5, 54, 49, 0.1),
     0 24px 48px rgba(5, 54, 49, 0.18),
     0 16px 36px rgba(255, 117, 32, 0.36);
 }
@@ -128,8 +187,8 @@ body.kiosk-start {
 .take-away:hover {
   box-shadow:
     0 10px 20px rgba(5, 54, 49, 0.12),
-    0 30px 60px rgba(5, 54, 49, 0.20),
-    0 22px 44px rgba(255, 117, 32, 0.50);
+    0 30px 60px rgba(5, 54, 49, 0.2),
+    0 22px 44px rgba(255, 117, 32, 0.5);
   filter: saturate(1.05);
 }
 
@@ -141,7 +200,7 @@ body.kiosk-start {
   background: var(--dark-green);
   color: #fff;
   box-shadow:
-    0 8px 16px rgba(5, 54, 49, 0.10),
+    0 8px 16px rgba(5, 54, 49, 0.1),
     0 24px 48px rgba(5, 54, 49, 0.18),
     0 16px 36px rgba(140, 208, 3, 0.36);
 }
@@ -149,8 +208,8 @@ body.kiosk-start {
 .dine-in:hover {
   box-shadow:
     0 10px 20px rgba(5, 54, 49, 0.12),
-    0 30px 60px rgba(5, 54, 49, 0.20),
-    0 22px 44px rgba(140, 208, 3, 0.50);
+    0 30px 60px rgba(5, 54, 49, 0.2),
+    0 22px 44px rgba(140, 208, 3, 0.5);
   filter: saturate(1.05);
 }
 
