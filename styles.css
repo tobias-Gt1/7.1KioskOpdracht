@@ -14,7 +14,7 @@
 
 body.kiosk-start {
   margin: 0;
-  background: linear-gradient(180deg, var(--light-green) 0%, var(--green) 100%);
+  background: var(--white);
   color: var(--dark-blue);
   font-family:
     system-ui,
@@ -33,12 +33,16 @@ body.kiosk-start {
   justify-content: flex-start;
   gap: 24px;
   padding: 24px;
+  position: relative;
+  z-index: 1; /* ensure content is above the animation background */
 }
 
 .brand {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  z-index: 2; /* ensure logo sits above background animation */
 }
 
 .brand .logo-text {
@@ -76,6 +80,8 @@ body.kiosk-start {
   max-width: 560px;
   margin-top: auto;
   padding-bottom: clamp(32px, 8vh, 96px);
+  position: relative;
+  z-index: 2; 
 }
 
 @media (min-width: 768px) {
@@ -149,12 +155,16 @@ body.kiosk-start {
 }
 
 .action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: 1;
   padding: 24px;
   height: 96px;
   border-radius: 16px;
   border: none;
   cursor: pointer;
+  text-decoration: none;
   font-size: clamp(18px, 2.5vw, 28px);
   font-weight: 700;
   transition:

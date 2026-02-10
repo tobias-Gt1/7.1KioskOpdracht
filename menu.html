@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kiosk Bestellen</title>
+    <link rel="stylesheet" href="menu.css" />
+  </head>
+  <body class="kiosk-order">
+    <header class="app-header" role="banner">
+      <a class="brand" href="index.html" aria-label="Terug naar start">
+        <img class="logo-image" src="assets/logo_big_complete_transparent.png" alt="Happy Herbivore — Healthy in a Hurry" />
+        <span class="logo-text">Kiosk</span>
+      </a>
+      <div class="session-info">
+        <span id="service-mode" class="service-chip" aria-live="polite">Bestellen</span>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar" aria-label="Categorieën">
+        <h2 class="sidebar-title">Categorieën</h2>
+        <nav id="category-list" class="category-list" aria-label="Productcategorieën"></nav>
+      </aside>
+
+      <main class="content" role="main">
+        <h1 class="content-title">Onze producten</h1>
+        <section id="product-grid" class="product-grid" aria-label="Productoverzicht"></section>
+      </main>
+    </div>
+
+    <footer class="cart-bar" aria-label="Huidige bestelling" aria-live="polite">
+      <div class="cart-left">
+        <h2 class="cart-title">Je bestelling</h2>
+        <div id="cart-items" class="cart-items"></div>
+      </div>
+      <div class="cart-right">
+        <div class="cart-summary">
+          <span id="cart-count" class="cart-count">0 items</span>
+          <span id="cart-total" class="cart-total">€ 0,00</span>
+        </div>
+        <button id="checkout-btn" class="checkout-btn" type="button" disabled>
+          Afrekenen
+        </button>
+      </div>
+    </footer>
+
+    <noscript>
+      <p class="noscript">Schakel JavaScript in om te bestellen.</p>
+    </noscript>
+
+    <script src="menu.js" defer></script>
+  </body>
+</html>
