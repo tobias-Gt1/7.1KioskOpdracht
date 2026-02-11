@@ -26,8 +26,7 @@
       name: "Mediterranean Falafel Bowl",
       price: 10.0,
       category: "Bowls",
-      image:
-        "assets/Mediterranean Falafel Bowl (VG) – €10.00 (440 kcal).png",
+      image: "assets/Mediterranean Falafel Bowl (VG) – €10.00 (440 kcal).png",
     },
     {
       id: "bowl-tofu-power-tahini",
@@ -41,8 +40,7 @@
       name: "Warm Teriyaki Tempeh Bowl",
       price: 11.0,
       category: "Bowls",
-      image:
-        "assets/Warm Teriyaki Tempeh Bowl (VG) – €11.00 (500 kcal).png",
+      image: "assets/Warm Teriyaki Tempeh Bowl (VG) – €11.00 (500 kcal).png",
     },
     {
       id: "bowl-acai-morning-boost",
@@ -67,24 +65,21 @@
       name: "Avocado & Halloumi Toastie",
       price: 9.0,
       category: "Wraps & Sandwiches",
-      image:
-        "assets/Avocado & Halloumi Toastie (V) – €9.00 (460 kcal).png",
+      image: "assets/Avocado & Halloumi Toastie (V) – €9.00 (460 kcal).png",
     },
     {
       id: "slider-jackfruit-bbq",
       name: "Smoky BBQ Jackfruit Slider",
       price: 7.5,
       category: "Wraps & Sandwiches",
-      image:
-        "assets/Smoky BBQ Jackfruit Slider (VG) – €7.50 (350 kcal).png",
+      image: "assets/Smoky BBQ Jackfruit Slider (VG) – €7.50 (350 kcal).png",
     },
     {
       id: "wrap-zesty-chickpea",
       name: "Zesty Chickpea Hummus Wrap",
       price: 8.5,
       category: "Wraps & Sandwiches",
-      image:
-        "assets/Zesty Chickpea Hummus Wrap (VG) – €8.50 (410 kcal).png",
+      image: "assets/Zesty Chickpea Hummus Wrap (VG) – €8.50 (410 kcal).png",
     },
 
     // Sides & Snacks
@@ -93,16 +88,14 @@
       name: "Baked Falafel Bites - 5pcs",
       price: 5.0,
       category: "Sides & Snacks",
-      image:
-        "assets/Baked Falafel Bites - 5pcs (VG) – €5.00 (230 kcal).png",
+      image: "assets/Baked Falafel Bites - 5pcs (VG) – €5.00 (230 kcal).png",
     },
     {
       id: "snack-veggie-platter",
       name: "Mini Veggie Platter & Hummus",
       price: 4.0,
       category: "Sides & Snacks",
-      image:
-        "assets/Mini Veggie Platter & Hummus (VG) – €4.00 (160 kcal).png",
+      image: "assets/Mini Veggie Platter & Hummus (VG) – €4.00 (160 kcal).png",
     },
     {
       id: "snack-sweet-potato-wedges",

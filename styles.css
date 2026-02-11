@@ -81,7 +81,7 @@ body.kiosk-start {
   margin-top: auto;
   padding-bottom: clamp(32px, 8vh, 96px);
   position: relative;
-  z-index: 2; 
+  z-index: 2;
 }
 
 @media (min-width: 768px) {
