@@ -290,17 +290,17 @@
       media.textContent = p.category;
     };
     media.appendChild(img);
-    const overlay = document.createElement("div");
-    overlay.className = "product-overlay";
+
+    const body = document.createElement("div");
+    body.className = "product-body";
     const name = document.createElement("p");
     name.className = "product-name";
     name.textContent = p.name;
     const price = document.createElement("p");
     price.className = "product-price";
     price.textContent = formatPrice(p.price);
-    overlay.appendChild(name);
-    overlay.appendChild(price);
-    media.appendChild(overlay);
+    body.appendChild(name);
+    body.appendChild(price);
 
     const actions = document.createElement("div");
     actions.className = "product-actions";
@@ -312,6 +312,7 @@
     actions.appendChild(add);
 
     card.appendChild(media);
+    card.appendChild(body);
     card.appendChild(actions);
     return card;
   }

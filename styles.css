@@ -1,3 +1,19 @@
+@import url("renos-rough-font (1)/stylesheet.css");
+
+:root {
+  --orange: #ff7520;
+  --light-orange: #ffb181;
+  --green: #8cd003;
+  --light-green: #deff78;
+  --dark-green: #5fa600;
+  --dark-blue: #053631;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 :root {
   --orange: #ff7520;
   --light-orange: #ffb181;
@@ -17,6 +33,7 @@ body.kiosk-start {
   background: var(--white);
   color: var(--dark-blue);
   font-family:
+    "renos_roughregular",
     system-ui,
     -apple-system,
     "Segoe UI",
