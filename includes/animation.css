@@ -1,0 +1,30 @@
+/* Scoped animation styles for the start screen */
+.stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh; /* JS will adjust height to exclude buttons area */
+  background: #ffffff; /* keep overall white background */
+  visibility: hidden; /* shown after init */
+  pointer-events: none; /* do not block interactions */
+  z-index: -1; /* ensure it's behind all content */
+}
+
+.stage canvas {
+  opacity: 0.22;
+}
+
+/* text content removed per request */
+
+/* Responsive: scale down stage on narrow screens */
+@media (max-width: 768px) {
+  .stage {
+    transform: none;
+  }
+}
+@media (max-width: 560px) {
+  .stage {
+    transform: none;
+  }
+}
