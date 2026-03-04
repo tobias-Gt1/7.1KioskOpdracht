@@ -99,9 +99,15 @@ body.kiosk-order {
 }
 
 .sidebar {
+  position: sticky;
+  top: 0;
+  height: fit-content;
+  max-height: calc(100vh - 74px);
+  overflow-y: auto;
   background: var(--surface);
   border-right: 1px solid var(--border);
   padding: 18px 14px;
+  z-index: 5;
 }
 
 .sidebar-title {
