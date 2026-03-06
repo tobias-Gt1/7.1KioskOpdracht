@@ -51,8 +51,7 @@ body.kiosk-start {
   gap: 40px;
   padding: 24px;
   position: relative;
-  z-index: 1;
-  /* ensure content is above the animation background */
+  z-index: 1; /* ensure content is above the animation background */
 }
 
 .brand {
@@ -60,8 +59,7 @@ body.kiosk-start {
   flex-direction: column;
   align-items: center;
   position: relative;
-  z-index: 2;
-  /* ensure logo sits above background animation */
+  z-index: 2; /* ensure logo sits above background animation */
 }
 
 .brand .logo-text {
@@ -96,11 +94,12 @@ body.kiosk-start {
   gap: 16px;
   width: 100%;
   max-width: 560px;
-  margin-top: 0;
-  padding-bottom: 0;
+  margin-top: auto;
+  padding-bottom: clamp(32px, 8vh, 96px);
   position: relative;
   z-index: 2;
 }
+
 
 .language-options {
   display: flex;
@@ -185,6 +184,7 @@ body.kiosk-start {
   .logo-image {
     width: clamp(140px, 36vw, 260px);
   }
+
 }
 
 @media (orientation: portrait) and (min-height: 900px) {
@@ -313,7 +313,6 @@ body.kiosk-start {
     font-size: 28px;
   }
 }
-
 /* Kiosk Specific 1080 x 1920 (Portret) Optimalisatie */
 @media (min-width: 1080px) and (min-height: 1800px) {
   body.kiosk-start {

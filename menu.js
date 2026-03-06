@@ -1,5 +1,7 @@
 // Kiosk menu
 (function () {
+  const API_URL = "http://localhost:3000/products";
+
   const categoryEl = document.getElementById("category-list");
   const gridEl = document.getElementById("product-grid");
   const cartItemsEl = document.getElementById("cart-items");
@@ -8,7 +10,7 @@
   const checkoutBtn = document.getElementById("checkout-btn");
   const serviceChip = document.getElementById("service-mode");
 
-  const CATEGORIES = [
+  const DEFAULT_CATEGORIES = [
     "Alles",
     "Bowls",
     "Salades",
@@ -19,7 +21,7 @@
     "Drinks & Smoothies",
   ];
 
-  const PRODUCTS = [
+  const FALLBACK_PRODUCTS = [
     // Bowls
     {
       id: "bowl-falafel-mediterranean",
@@ -204,6 +206,50 @@
     },
   ];
 
+  let categories = [...DEFAULT_CATEGORIES];
+  let products = [...FALLBACK_PRODUCTS];
+
+  function normalizeImageUrl(rawValue) {
+    if (!rawValue) return "";
+    if (/^https?:\/\//i.test(rawValue)) return rawValue;
+    if (rawValue.startsWith("/")) return `http://localhost:3000${rawValue}`;
+    return `http://localhost:3000/assets/${rawValue}`;
+  }
+
+  function normalizeProduct(apiProduct, index) {
+    const id = String(
+      apiProduct.product_id ?? apiProduct.id ?? apiProduct.productId ?? index + 1,
+    );
+    const name = apiProduct.name || apiProduct.product_name || `Product ${index + 1}`;
+    const price = Number(apiProduct.price ?? apiProduct.product_price ?? apiProduct.prijs ?? 0);
+    const category =
+      apiProduct.category_name || apiProduct.category || apiProduct.category_label || "Overig";
+
+    return {
+      id,
+      name,
+      price: Number.isFinite(price) ? price : 0,
+      category,
+      image: normalizeImageUrl(apiProduct.image_url),
+    };
+  }
+
+  async function loadProductsFromApi() {
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+      throw new Error(`API status ${response.status}`);
+    }
+
+    const rows = await response.json();
+    if (!Array.isArray(rows) || rows.length === 0) {
+      throw new Error("Geen producten uit API");
+    }
+
+    products = rows.map(normalizeProduct);
+    const uniqueCategories = [...new Set(products.map((item) => item.category))];
+    categories = ["Alles", ...uniqueCategories];
+  }
+
   const currency = new Intl.NumberFormat("nl-NL", {
     style: "currency",
     currency: "EUR",
@@ -234,7 +280,7 @@
   }
 
   function addToCart(productId) {
-    const p = PRODUCTS.find((x) => x.id === productId);
+    const p = products.find((x) => x.id === productId);
     if (!p) return;
     const item = cart.items[productId] || { product: p, qty: 0 };
     item.qty += 1;
@@ -258,7 +304,7 @@
 
   function renderCategories() {
     categoryEl.innerHTML = "";
-    CATEGORIES.forEach((cat, idx) => {
+    categories.forEach((cat, idx) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "category-btn";
@@ -321,8 +367,8 @@
   function renderProducts(selectedCategory) {
     gridEl.innerHTML = "";
     const list = selectedCategory
-      ? PRODUCTS.filter((p) => p.category === selectedCategory)
-      : PRODUCTS;
+      ? products.filter((p) => p.category === selectedCategory)
+      : products;
     list.forEach((p) => gridEl.appendChild(productCard(p)));
   }
 
@@ -385,7 +431,19 @@
     window.location.href = "cart.html";
   });
 
-  renderCategories();
-  renderProducts(null);
-  renderCart();
+  async function init() {
+    try {
+      await loadProductsFromApi();
+    } catch (error) {
+      console.warn("API niet beschikbaar, fallback op lokale productlijst.", error);
+      categories = [...DEFAULT_CATEGORIES];
+      products = [...FALLBACK_PRODUCTS];
+    }
+
+    renderCategories();
+    renderProducts(null);
+    renderCart();
+  }
+
+  init();
 })();
