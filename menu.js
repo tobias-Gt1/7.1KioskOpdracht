@@ -214,6 +214,7 @@
 
   const params = new URLSearchParams(window.location.search);
   const service = params.get("service");
+  localStorage.setItem("kiosk_service_mode", service || "bestellen");
   if (service === "take-away") serviceChip.textContent = "Meenemen";
   else if (service === "dine-in") serviceChip.textContent = "Hier eten";
   else serviceChip.textContent = "Bestellen";
@@ -381,9 +382,7 @@
   }
 
   checkoutBtn.addEventListener("click", () => {
-    alert(
-      `Afrekenen: ${cartCountEl.textContent} • Totaal ${cartTotalEl.textContent}`,
-    );
+    window.location.href = "cart.html";
   });
 
   renderCategories();
