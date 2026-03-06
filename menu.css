@@ -374,129 +374,6 @@ body.kiosk-order {
   }
 }
 
-@media (min-height: 900px) {
-  body.kiosk-order {
-    font-size: 20px;
-  }
-
-  .app-header {
-    padding: 20px 28px;
-  }
-
-  .logo-image {
-    height: 56px;
-  }
-
-  .logo-text {
-    font-size: 2rem;
-  }
-
-  .service-chip {
-    font-size: 1.1rem;
-    padding: 10px 18px;
-  }
-
-  .layout {
-    grid-template-columns: 1fr;
-    min-height: calc(100vh - 102px);
-  }
-
-  .sidebar {
-    position: static;
-    max-height: none;
-    overflow: visible;
-    border-right: 0;
-    border-bottom: 1px solid var(--border);
-    padding: 20px 24px;
-  }
-
-  .sidebar-title {
-    font-size: 1.25rem;
-    margin-bottom: 12px;
-  }
-
-  .category-list {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-  }
-
-  .category-list button {
-    white-space: nowrap;
-    font-size: 1.05rem;
-    padding: 12px 18px;
-    border-radius: 14px;
-  }
-
-  .content {
-    padding: 24px;
-  }
-
-  .content-title {
-    font-size: 2.1rem;
-    margin-bottom: 18px;
-  }
-
-  .product-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-  }
-
-  .product-card {
-    grid-template-rows: 300px auto auto;
-    border-radius: 16px;
-  }
-
-  .product-media {
-    height: 300px;
-  }
-
-  .product-body {
-    padding: 16px 16px 8px;
-  }
-
-  .product-name {
-    font-size: 1.3rem;
-    line-height: 1.25;
-  }
-
-  .product-price {
-    font-size: 1.05rem;
-  }
-
-  .add-btn {
-    min-height: 56px;
-    font-size: 1.1rem;
-    border-radius: 12px;
-  }
-
-  .cart-bar {
-    padding: 18px 24px;
-    gap: 18px;
-  }
-
-  .cart-title {
-    font-size: 1.2rem;
-  }
-
-  .cart-item {
-    padding: 10px 14px;
-  }
-
-  .cart-item-name,
-  .cart-count,
-  .cart-total {
-    font-size: 1.05rem;
-  }
-
-  .checkout-btn {
-    min-width: 210px;
-    min-height: 58px;
-    font-size: 1.1rem;
-  }
-}
-
 /* Kiosk Specific 1080 x 1920 (Portret) Optimalisatie */
 @media (min-width: 1080px) and (min-height: 1800px) {
   body.kiosk-order {
@@ -521,7 +398,7 @@ body.kiosk-order {
   }
 
   .layout {
-    grid-template-columns: 380px 1fr;
+    grid-template-columns: 340px 1fr;
     min-height: calc(100vh - 150px);
   }
 
@@ -529,9 +406,9 @@ body.kiosk-order {
     position: sticky;
     top: 151px;
     /* Just below header */
-    height: calc(100vh - 151px - 210px);
+    height: calc(100vh - 151px - 200px);
     /* Adjust for cart-bar */
-    max-height: calc(100vh - 151px - 210px);
+    max-height: calc(100vh - 151px - 200px);
     overflow-y: auto;
     border-right: 1px solid var(--border);
     border-bottom: 0;
@@ -539,7 +416,7 @@ body.kiosk-order {
   }
 
   .sidebar-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
     margin-bottom: 24px;
   }
 
@@ -552,10 +429,10 @@ body.kiosk-order {
   .category-list button {
     white-space: normal;
     text-align: left;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     padding: 24px 28px;
     border-radius: 20px;
-    min-height: 100px;
+    min-height: 90px;
   }
 
   .content {
@@ -573,66 +450,34 @@ body.kiosk-order {
   }
 
   .product-card {
-    position: relative;
+    grid-template-rows: 420px auto auto;
     border-radius: 24px;
     box-shadow: 0 4px 16px rgba(5, 54, 49, 0.05);
-    overflow: hidden;
-    height: 480px;
-    /* Fixed height for image focus */
   }
 
   .product-media {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
+    height: 420px;
   }
 
-  /* Overlay text over the image */
   .product-body {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 32px 28px 12px;
-    z-index: 2;
-    background: linear-gradient(to bottom, rgba(5, 54, 49, 0.7) 0%, rgba(5, 54, 49, 0) 100%);
-    pointer-events: none;
-    /* Let clicks pass through */
+    padding: 24px 24px 12px;
   }
 
   .product-name {
-    font-size: 2.2rem;
-    /* Smaller text size as requested */
-    color: #ffffff;
-    /* White text */
-    line-height: 1.25;
-    margin-bottom: 8px;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    /* Better readability on images */
+    font-size: 1.8rem;
+    line-height: 1.3;
   }
 
   .product-price {
-    font-size: 1.8rem;
-    /* Smaller text size */
-    color: #ffffff;
-    font-weight: 700;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    font-size: 1.5rem;
+    margin-top: 8px;
   }
 
   .add-btn {
-    position: absolute;
-    bottom: 24px;
-    left: 24px;
-    right: 24px;
-    z-index: 3;
     min-height: 80px;
-    font-size: 2rem;
+    font-size: 1.6rem;
     border-radius: 18px;
-    width: calc(100% - 48px);
-    /* Take full width minus padding */
+    margin-top: 10px;
   }
 
   .cart-bar {
