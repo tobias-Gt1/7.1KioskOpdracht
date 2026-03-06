@@ -687,7 +687,8 @@ body.kiosk-cart {
   }
 
   .cart-page {
-    grid-template-columns: 1fr; /* Keep it single column, it looks better on portrait */
+    grid-template-columns: 1fr;
+    /* Keep it single column, it looks better on portrait */
     gap: 32px;
     padding: 40px;
   }
