@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kiosk Winkelmand</title>
+    <link rel="stylesheet" href="cart.css" />
+  </head>
+  <body class="kiosk-cart">
+    <header class="app-header" role="banner">
+      <a class="brand" href="menu.html" aria-label="Terug naar menu">
+        <img
+          class="logo-image"
+          src="assets/logo_big_complete_transparent.png"
+          alt="Happy Herbivore — Healthy in a Hurry"
+        />
+        <span class="logo-text" data-i18n="cart.title">Winkelmand</span>
+      </a>
+      <div class="session-info">
+        <span
+          id="service-mode"
+          class="service-chip"
+          aria-live="polite"
+          data-i18n="menu.service.default"
+          >Bestellen</span
+        >
+      </div>
+    </header>
+
+    <main class="cart-page" role="main">
+      <section class="cart-panel" aria-label="Winkelmand overzicht">
+        <h1 class="page-title" data-i18n="cart.pageTitle">
+          Controleer je bestelling
+        </h1>
+        <p id="empty-state" class="empty-state" hidden data-i18n="cart.empty">
+          Je winkelmand is leeg. Kies producten in het menu om verder te gaan.
+        </p>
+        <div id="cart-list" class="cart-list"></div>
+
+        <section class="recommendations" aria-label="Aanbevolen producten">
+          <h2 class="recommendations-title" data-i18n="cart.recommendations">
+            Nog iets toevoegen?
+          </h2>
+          <div id="recommendations-grid" class="recommendations-grid"></div>
+        </section>
+      </section>
+
+      <aside class="summary-panel" aria-label="Bestelsamenvatting">
+        <h2 class="summary-title" data-i18n="cart.summary">Samenvatting</h2>
+        <div class="summary-row">
+          <span data-i18n="cart.itemCount">Aantal items</span>
+          <strong id="summary-count">0</strong>
+        </div>
+        <div class="summary-row">
+          <span data-i18n="cart.subtotal">Subtotaal</span>
+          <strong id="summary-subtotal">€ 0,00</strong>
+        </div>
+        <div class="voucher-section">
+          <label
+            for="voucher-input"
+            class="voucher-label"
+            data-i18n="cart.voucher"
+            >Voucher code</label
+          >
+          <div class="voucher-input-group">
+            <input
+              type="text"
+              id="voucher-input"
+              class="voucher-input"
+              placeholder="Voer code in"
+              data-i18n-placeholder="cart.voucherPlaceholder"
+            />
+            <button
+              id="voucher-apply-btn"
+              class="voucher-apply-btn"
+              type="button"
+              data-i18n="cart.voucherApply"
+            >
+              Toepassen
+            </button>
+          </div>
+          <p id="voucher-message" class="voucher-message" hidden></p>
+        </div>
+        <div class="summary-row discount" id="discount-row" hidden>
+          <span data-i18n="cart.discount">Korting</span>
+          <strong id="discount-amount">- € 0,00</strong>
+        </div>
+        <div class="summary-row total">
+          <span data-i18n="cart.total">Totaal</span>
+          <strong id="summary-total">€ 0,00</strong>
+        </div>
+        <div class="summary-actions">
+          <a class="back-btn" href="menu.html" data-i18n="cart.back"
+            >Terug naar menu</a
+          >
+          <button
+            id="place-order-btn"
+            class="place-order-btn"
+            type="button"
+            disabled
+            data-i18n="cart.placeOrder"
+          >
+            Bestelling plaatsen
+          </button>
+        </div>
+      </aside>
+    </main>
+
+    <div id="charity-modal" class="charity-modal" hidden>
+      <div class="charity-modal-content">
+        <h2 class="charity-modal-title" data-i18n="cart.charityTitle">
+          Wil je doneren aan goed doel?
+        </h2>
+        <p class="charity-modal-description" data-i18n="cart.charityDesc">
+          Voor slechts €0,70 extra help je ons goed doel ondersteunen.
+        </p>
+        <div class="charity-modal-actions">
+          <button
+            id="charity-donate-btn"
+            class="charity-donate-btn"
+            type="button"
+            data-i18n="cart.charityYes"
+          >
+            ✓ Ja, €0,70 doneren
+          </button>
+          <button
+            id="charity-skip-btn"
+            class="charity-skip-btn"
+            type="button"
+            data-i18n="cart.charityNo"
+          >
+            Nee, niet doneren
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="thank-you-screen" class="thank-you-screen" hidden>
+      <div class="thank-you-content">
+        <h1 class="thank-you-title" data-i18n="cart.thanksTitle">
+          Bedankt voor je bestelling!
+        </h1>
+        <p class="thank-you-subtitle" data-i18n="cart.thanksSub">
+          Het word voor u klaargemaakt
+        </p>
+        <p class="order-number-label" data-i18n="cart.orderNumberLabel">
+          Ordernummer
+        </p>
+        <p
+          id="order-number-value"
+          class="order-number-value"
+          aria-live="polite"
+        >
+          #--
+        </p>
+      </div>
+    </div>
+
+    <noscript>
+      <p class="noscript" data-i18n="cart.noscript">
+        Schakel JavaScript in om je winkelmand te bekijken.
+      </p>
+    </noscript>
+
+    <script src="kiosk-language.js" defer></script>
+    <script src="cart.js" defer></script>
+  </body>
+</html>

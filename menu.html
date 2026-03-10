@@ -14,10 +14,14 @@
           src="assets/logo_big_complete_transparent.png"
           alt="Happy Herbivore — Healthy in a Hurry"
         />
-        <span class="logo-text">Kiosk</span>
+        <span class="logo-text">Happy Herbivore</span>
       </a>
       <div class="session-info">
-        <span id="service-mode" class="service-chip" aria-live="polite"
+        <span
+          id="service-mode"
+          class="service-chip"
+          aria-live="polite"
+          data-i18n="menu.service.default"
           >Bestellen</span
         >
       </div>
@@ -25,7 +29,7 @@
 
     <div class="layout">
       <aside class="sidebar" aria-label="Categorieën">
-        <h2 class="sidebar-title">Categorieën</h2>
+        <h2 class="sidebar-title" data-i18n="menu.categories">Categorieën</h2>
         <nav
           id="category-list"
           class="category-list"
@@ -34,7 +38,7 @@
       </aside>
 
       <main class="content" role="main">
-        <h1 class="content-title">Onze producten</h1>
+        <h1 class="content-title" data-i18n="menu.products">Onze producten</h1>
         <section
           id="product-grid"
           class="product-grid"
@@ -45,7 +49,7 @@
 
     <footer class="cart-bar" aria-label="Huidige bestelling" aria-live="polite">
       <div class="cart-left">
-        <h2 class="cart-title">Je bestelling</h2>
+        <h2 class="cart-title" data-i18n="menu.order">Je bestelling</h2>
         <div id="cart-items" class="cart-items"></div>
       </div>
       <div class="cart-right">
@@ -53,16 +57,25 @@
           <span id="cart-count" class="cart-count">0 items</span>
           <span id="cart-total" class="cart-total">€ 0,00</span>
         </div>
-        <button id="checkout-btn" class="checkout-btn" type="button" disabled>
+        <button
+          id="checkout-btn"
+          class="checkout-btn"
+          type="button"
+          disabled
+          data-i18n="menu.checkout"
+        >
           Afrekenen
         </button>
       </div>
     </footer>
 
     <noscript>
-      <p class="noscript">Schakel JavaScript in om te bestellen.</p>
+      <p class="noscript" data-i18n="menu.noscript">
+        Schakel JavaScript in om te bestellen.
+      </p>
     </noscript>
 
+    <script src="kiosk-language.js" defer></script>
     <script src="menu.js" defer></script>
   </body>
 </html>

@@ -240,16 +240,23 @@ body.kiosk-order {
   color: var(--muted);
 }
 
+.cart-left {
+  min-width: 0;
+}
+
 .cart-items {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 8px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px;
 }
 
 .cart-item {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 10px;
   border: 1px solid var(--border);
@@ -260,6 +267,10 @@ body.kiosk-order {
 
 .cart-item-name {
   font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .qty {
@@ -371,5 +382,329 @@ body.kiosk-order {
 
   .cart-right {
     justify-items: start;
+  }
+}
+
+@media (min-height: 900px) {
+  body.kiosk-order {
+    font-size: 20px;
+  }
+
+  .app-header {
+    padding: 20px 28px;
+  }
+
+  .logo-image {
+    height: 56px;
+  }
+
+  .logo-text {
+    font-size: 2rem;
+  }
+
+  .service-chip {
+    font-size: 1.1rem;
+    padding: 10px 18px;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    min-height: calc(100vh - 102px);
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+
+  .sidebar-title {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+  }
+
+  .category-list {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .category-list button {
+    white-space: nowrap;
+    font-size: 1.05rem;
+    padding: 12px 18px;
+    border-radius: 14px;
+  }
+
+  .content {
+    padding: 24px;
+  }
+
+  .content-title {
+    font-size: 2.1rem;
+    margin-bottom: 18px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .product-card {
+    grid-template-rows: 300px auto auto;
+    border-radius: 16px;
+  }
+
+  .product-media {
+    height: 300px;
+  }
+
+  .product-body {
+    padding: 16px 16px 8px;
+  }
+
+  .product-name {
+    font-size: 1.3rem;
+    line-height: 1.25;
+  }
+
+  .product-price {
+    font-size: 1.05rem;
+  }
+
+  .add-btn {
+    min-height: 56px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+  }
+
+  .cart-bar {
+    padding: 18px 24px;
+    gap: 18px;
+  }
+
+  .cart-title {
+    font-size: 1.2rem;
+  }
+
+  .cart-item {
+    padding: 10px 14px;
+  }
+
+  .cart-item-name,
+  .cart-count,
+  .cart-total {
+    font-size: 1.05rem;
+  }
+
+  .checkout-btn {
+    min-width: 210px;
+    min-height: 58px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Kiosk Specific 1080 x 1920 (Portret) Optimalisatie */
+@media (min-width: 1080px) and (min-height: 1800px) {
+  body.kiosk-order {
+    font-size: 26px;
+  }
+
+  .app-header {
+    padding: 32px 40px;
+  }
+
+  .logo-image {
+    height: 86px;
+  }
+
+  .logo-text {
+    font-size: 3rem;
+  }
+
+  .service-chip {
+    font-size: 1.6rem;
+    padding: 16px 28px;
+  }
+
+  .layout {
+    grid-template-columns: 380px 1fr;
+    min-height: calc(100vh - 150px);
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 151px;
+    /* Just below header */
+    height: calc(100vh - 151px - 210px);
+    /* Adjust for cart-bar */
+    max-height: calc(100vh - 151px - 210px);
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    border-bottom: 0;
+    padding: 40px 32px;
+  }
+
+  .sidebar-title {
+    font-size: 2.2rem;
+    margin-bottom: 24px;
+  }
+
+  .category-list {
+    display: grid;
+    gap: 20px;
+    overflow-x: hidden;
+  }
+
+  .category-list button {
+    white-space: normal;
+    text-align: left;
+    font-size: 1.6rem;
+    padding: 24px 28px;
+    border-radius: 20px;
+    min-height: 100px;
+  }
+
+  .content {
+    padding: 40px;
+  }
+
+  .content-title {
+    font-size: 3rem;
+    margin-bottom: 32px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+  .product-card {
+    position: relative;
+    border-radius: 24px;
+    box-shadow: 0 4px 16px rgba(5, 54, 49, 0.05);
+    overflow: hidden;
+    height: 480px;
+    /* Fixed height for image focus */
+  }
+
+  .product-media {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+  /* Overlay text over the image */
+  .product-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 32px 28px 12px;
+    z-index: 2;
+    background: linear-gradient(to bottom, rgba(5, 54, 49, 0.7) 0%, rgba(5, 54, 49, 0) 100%);
+    pointer-events: none;
+    /* Let clicks pass through */
+  }
+
+  .product-name {
+    font-size: 2.2rem;
+    /* Smaller text size as requested */
+    color: #ffffff;
+    /* White text */
+    line-height: 1.25;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    /* Better readability on images */
+  }
+
+  .product-price {
+    font-size: 1.8rem;
+    /* Smaller text size */
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .add-btn {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    z-index: 3;
+    min-height: 80px;
+    font-size: 2rem;
+    border-radius: 18px;
+    width: calc(100% - 48px);
+    /* Take full width minus padding */
+  }
+
+  .cart-bar {
+    padding: 32px 40px;
+    gap: 32px;
+    border-top: 2px solid var(--border);
+    box-shadow: 0 -10px 30px rgba(5, 54, 49, 0.08);
+  }
+
+  .cart-title {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+  }
+
+  .cart-items {
+    gap: 16px;
+    padding-bottom: 12px;
+    max-height: 240px;
+  }
+
+  .cart-item {
+    padding: 20px 24px;
+    border-radius: 20px;
+    gap: 24px;
+    min-width: 0;
+  }
+
+  .cart-item-name {
+    font-size: 1.5rem;
+  }
+
+  .qty-btn {
+    min-width: 48px;
+    height: 48px;
+    font-size: 1.4rem;
+  }
+
+  .qty-value {
+    min-width: 36px;
+    font-size: 1.4rem;
+  }
+
+  .remove-btn {
+    padding: 12px 20px;
+    font-size: 1.2rem;
+  }
+
+  .cart-summary {
+    gap: 24px;
+  }
+
+  .cart-count,
+  .cart-total {
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+
+  .checkout-btn {
+    min-width: 300px;
+    min-height: 86px;
+    font-size: 1.8rem;
+    border-radius: 20px;
   }
 }
