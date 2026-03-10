@@ -1,8 +1,8 @@
     <?php
     $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "kiosk_database";
+    $username = "u240173_kiosk";
+    $password = "UUm4NJSBqQ8jKepcH6A3";
+    $dbname = "u240173_kiosk";
     // maak connectie
     $conn = new mysqli($servername, $username, $password, $dbname);
     // Check connectie
