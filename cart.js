@@ -1,4 +1,6 @@
 (function () {
+  const t = (key, params) => window.kioskLanguage?.t(key, params) || key;
+
   const cartListEl = document.getElementById("cart-list");
   const emptyStateEl = document.getElementById("empty-state");
   const countEl = document.getElementById("summary-count");
@@ -16,6 +18,7 @@
   const charityDonateBtn = document.getElementById("charity-donate-btn");
   const charitySkipBtn = document.getElementById("charity-skip-btn");
   const thankYouScreen = document.getElementById("thank-you-screen");
+  const orderNumberValueEl = document.getElementById("order-number-value");
 
   const PRODUCTS = [
     {
@@ -193,6 +196,8 @@
     WELCOME10: { discount: 10, type: "percent" },
     SUMMER20: { discount: 20, type: "percent" },
     EXTRAKORTING: { discount: 15, type: "percent" },
+    GROOTOOR: { discount: 6.67, type: "fixed" },
+    KEUBURGER: { discount: 10, type: "fixed" },
   };
 
   const currency = new Intl.NumberFormat("nl-NL", {
@@ -202,9 +207,15 @@
 
   const storedService =
     localStorage.getItem("kiosk_service_mode") || "bestellen";
-  if (storedService === "take-away") serviceChip.textContent = "Meenemen";
-  else if (storedService === "dine-in") serviceChip.textContent = "Hier eten";
-  else serviceChip.textContent = "Bestellen";
+  function updateServiceChip() {
+    if (storedService === "take-away")
+      serviceChip.textContent = t("menu.service.takeAway");
+    else if (storedService === "dine-in")
+      serviceChip.textContent = t("menu.service.dineIn");
+    else serviceChip.textContent = t("menu.service.default");
+  }
+
+  updateServiceChip();
 
   let cart = loadCart();
   let currentDiscount = 0;
@@ -269,14 +280,24 @@
     const upper = code.toUpperCase().trim();
     const voucher = VOUCHERS[upper];
     if (!voucher) {
-      voucherMessage.textContent = "Ongeldige voucher code.";
+      voucherMessage.textContent = t("cart.voucherInvalid");
       voucherMessage.classList.remove("success");
       voucherMessage.classList.add("error");
       voucherMessage.hidden = false;
       return false;
     }
     appliedVoucher = upper;
-    voucherMessage.textContent = `${upper} toegepast! ${voucher.discount}% korting.`;
+    if (voucher.type === "fixed") {
+      voucherMessage.textContent = t("cart.voucherAppliedAmount", {
+        code: upper,
+        amount: formatPrice(voucher.discount),
+      });
+    } else {
+      voucherMessage.textContent = t("cart.voucherApplied", {
+        code: upper,
+        discount: voucher.discount,
+      });
+    }
     voucherMessage.classList.remove("error");
     voucherMessage.classList.add("success");
     voucherMessage.hidden = false;
@@ -307,7 +328,7 @@
     name.textContent = item.product.name;
     const unitPrice = document.createElement("p");
     unitPrice.className = "cart-price";
-    unitPrice.textContent = `${formatPrice(item.product.price)} per stuk`;
+    unitPrice.textContent = `${formatPrice(item.product.price)} ${t("cart.perPiece")}`;
 
     const qty = document.createElement("div");
     qty.className = "qty";
@@ -317,7 +338,7 @@
     minus.textContent = "-";
     minus.setAttribute(
       "aria-label",
-      `Verlaag hoeveelheid van ${item.product.name}`,
+      t("cart.decreaseQty", { name: item.product.name }),
     );
     minus.addEventListener("click", () => changeQty(item.product.id, -1));
 
@@ -331,7 +352,7 @@
     plus.textContent = "+";
     plus.setAttribute(
       "aria-label",
-      `Verhoog hoeveelheid van ${item.product.name}`,
+      t("cart.increaseQty", { name: item.product.name }),
     );
     plus.addEventListener("click", () => changeQty(item.product.id, +1));
 
@@ -352,7 +373,7 @@
     const remove = document.createElement("button");
     remove.type = "button";
     remove.className = "remove-btn";
-    remove.textContent = "Verwijderen";
+    remove.textContent = t("cart.remove");
     remove.addEventListener("click", () => removeItem(item.product.id));
 
     right.appendChild(lineTotal);
@@ -394,7 +415,7 @@
     const addBtn = document.createElement("button");
     addBtn.type = "button";
     addBtn.className = "recommendation-add";
-    addBtn.textContent = "+ Toevoegen";
+    addBtn.textContent = t("cart.add");
     addBtn.addEventListener("click", () => addRecommendation(product.id));
 
     card.appendChild(media);
@@ -421,6 +442,8 @@
       const v = VOUCHERS[appliedVoucher];
       if (v.type === "percent") {
         currentDiscount = (subtotal * v.discount) / 100;
+      } else if (v.type === "fixed") {
+        currentDiscount = Math.min(subtotal, v.discount);
       }
     }
 
@@ -451,12 +474,17 @@
   voucherApplyBtn.addEventListener("click", () => {
     const code = voucherInput.value.trim();
     if (!code) {
-      voucherMessage.textContent = "Voer een code in.";
+      voucherMessage.textContent = t("cart.voucherEnter");
       voucherMessage.classList.add("error");
       voucherMessage.hidden = false;
       return;
     }
     applyVoucher(code);
+  });
+
+  document.addEventListener("kiosk-language-changed", () => {
+    updateServiceChip();
+    render();
   });
 
   voucherInput.addEventListener("keypress", (e) => {
@@ -479,6 +507,9 @@
     });
     const discountAmount = appliedVoucher ? currentDiscount : 0;
     const total = subtotal - discountAmount + charityDonation;
+
+    const randomOrderNumber = Math.floor(Math.random() * 100) + 1;
+    orderNumberValueEl.textContent = `#${randomOrderNumber}`;
 
     // Show thank you screen
     thankYouScreen.hidden = false;

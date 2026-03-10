@@ -527,6 +527,24 @@ body.kiosk-cart {
   opacity: 0.95;
 }
 
+.order-number-label {
+  margin: 24px 0 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.95;
+}
+
+.order-number-value {
+  margin: 0;
+  font-size: clamp(4rem, 12vw, 8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-shadow: 0 8px 20px rgba(5, 54, 49, 0.28);
+}
+
 @media (min-height: 900px) {
   body.kiosk-cart {
     font-size: 20px;
@@ -660,6 +678,15 @@ body.kiosk-cart {
 
   .thank-you-subtitle {
     font-size: 2rem;
+  }
+
+  .order-number-label {
+    margin-top: 28px;
+    font-size: 1.4rem;
+  }
+
+  .order-number-value {
+    font-size: clamp(5rem, 10vw, 9rem);
   }
 }
 
@@ -805,5 +832,14 @@ body.kiosk-cart {
 
   .thank-you-subtitle {
     font-size: 2.8rem;
+  }
+
+  .order-number-label {
+    margin-top: 34px;
+    font-size: 1.9rem;
+  }
+
+  .order-number-value {
+    font-size: clamp(6rem, 9vw, 11rem);
   }
 }

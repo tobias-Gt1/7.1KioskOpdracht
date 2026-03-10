@@ -1,5 +1,7 @@
 // Kiosk menu
 (function () {
+  const t = (key, params) => window.kioskLanguage?.t(key, params) || key;
+
   const categoryEl = document.getElementById("category-list");
   const gridEl = document.getElementById("product-grid");
   const cartItemsEl = document.getElementById("cart-items");
@@ -9,7 +11,6 @@
   const serviceChip = document.getElementById("service-mode");
 
   const CATEGORIES = [
-    "Alles",
     "Bowls",
     "Salades",
     "Wraps & Sandwiches",
@@ -18,6 +19,21 @@
     "Breakfast",
     "Drinks & Smoothies",
   ];
+
+  const CATEGORY_KEY_BY_VALUE = {
+    Bowls: "menu.category.bowls",
+    Salades: "menu.category.salads",
+    "Wraps & Sandwiches": "menu.category.wraps",
+    "Sides & Snacks": "menu.category.sides",
+    "Sauces & Dips": "menu.category.sauces",
+    Breakfast: "menu.category.breakfast",
+    "Drinks & Smoothies": "menu.category.drinks",
+  };
+
+  function categoryLabel(value) {
+    const key = CATEGORY_KEY_BY_VALUE[value];
+    return key ? t(key) : value;
+  }
 
   const PRODUCTS = [
     // Bowls
@@ -215,9 +231,16 @@
   const params = new URLSearchParams(window.location.search);
   const service = params.get("service");
   localStorage.setItem("kiosk_service_mode", service || "bestellen");
-  if (service === "take-away") serviceChip.textContent = "Meenemen";
-  else if (service === "dine-in") serviceChip.textContent = "Hier eten";
-  else serviceChip.textContent = "Bestellen";
+  let selectedCategory = null;
+
+  function updateServiceChip() {
+    const storedService = localStorage.getItem("kiosk_service_mode") || "bestellen";
+    if (storedService === "take-away") serviceChip.textContent = t("menu.service.takeAway");
+    else if (storedService === "dine-in") serviceChip.textContent = t("menu.service.dineIn");
+    else serviceChip.textContent = t("menu.service.default");
+  }
+
+  updateServiceChip();
 
   let cart = loadCart();
   function loadCart() {
@@ -258,19 +281,34 @@
 
   function renderCategories() {
     categoryEl.innerHTML = "";
-    CATEGORIES.forEach((cat, idx) => {
+    const allBtn = document.createElement("button");
+    allBtn.type = "button";
+    allBtn.className = "category-btn";
+    allBtn.textContent = t("menu.category.all");
+    allBtn.setAttribute("aria-pressed", selectedCategory === null ? "true" : "false");
+    allBtn.addEventListener("click", () => {
+      document
+        .querySelectorAll(".category-list button")
+        .forEach((b) => b.setAttribute("aria-pressed", "false"));
+      allBtn.setAttribute("aria-pressed", "true");
+      selectedCategory = null;
+      renderProducts(selectedCategory);
+    });
+    categoryEl.appendChild(allBtn);
+
+    CATEGORIES.forEach((cat) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "category-btn";
-      btn.textContent = cat;
-      btn.setAttribute("aria-pressed", idx === 0 ? "true" : "false");
+      btn.textContent = categoryLabel(cat);
+      btn.setAttribute("aria-pressed", selectedCategory === cat ? "true" : "false");
       btn.addEventListener("click", () => {
         document
           .querySelectorAll(".category-list button")
           .forEach((b) => b.setAttribute("aria-pressed", "false"));
         btn.setAttribute("aria-pressed", "true");
-        const selected = cat === "Alles" ? null : cat;
-        renderProducts(selected);
+        selectedCategory = cat;
+        renderProducts(selectedCategory);
       });
       categoryEl.appendChild(btn);
     });
@@ -288,7 +326,7 @@
     img.src = p.image;
     img.onerror = () => {
       img.remove();
-      media.textContent = p.category;
+      media.textContent = categoryLabel(p.category);
     };
     media.appendChild(img);
 
@@ -308,7 +346,7 @@
     const add = document.createElement("button");
     add.type = "button";
     add.className = "add-btn";
-    add.textContent = "Toevoegen";
+    add.textContent = t("menu.add");
     add.addEventListener("click", () => addToCart(p.id));
     actions.appendChild(add);
 
@@ -347,7 +385,7 @@
       minus.className = "qty-btn";
       minus.setAttribute(
         "aria-label",
-        `Verlaag hoeveelheid van ${product.name}`,
+        t("menu.decreaseQty", { name: product.name }),
       );
       minus.textContent = "-";
       const value = document.createElement("span");
@@ -358,7 +396,7 @@
       plus.className = "qty-btn";
       plus.setAttribute(
         "aria-label",
-        `Verhoog hoeveelheid van ${product.name}`,
+        t("menu.increaseQty", { name: product.name }),
       );
       plus.textContent = "+";
       minus.addEventListener("click", () => changeQty(product.id, -1));
@@ -369,14 +407,14 @@
       const remove = document.createElement("button");
       remove.type = "button";
       remove.className = "remove-btn";
-      remove.textContent = "Verwijderen";
+      remove.textContent = t("menu.remove");
       remove.addEventListener("click", () => removeItem(product.id));
       itemEl.appendChild(name);
       itemEl.appendChild(qtyEl);
       itemEl.appendChild(remove);
       cartItemsEl.appendChild(itemEl);
     });
-    cartCountEl.textContent = `${count} ${count === 1 ? "item" : "items"}`;
+    cartCountEl.textContent = `${count} ${count === 1 ? t("menu.item") : t("menu.items")}`;
     cartTotalEl.textContent = formatPrice(total);
     checkoutBtn.disabled = count === 0;
   }
@@ -385,7 +423,14 @@
     window.location.href = "cart.html";
   });
 
+  document.addEventListener("kiosk-language-changed", () => {
+    updateServiceChip();
+    renderCategories();
+    renderProducts(selectedCategory);
+    renderCart();
+  });
+
   renderCategories();
-  renderProducts(null);
+  renderProducts(selectedCategory);
   renderCart();
 })();
