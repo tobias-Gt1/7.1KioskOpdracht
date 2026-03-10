@@ -9,22 +9,18 @@
   const cartTotalEl = document.getElementById("cart-total");
   const checkoutBtn = document.getElementById("checkout-btn");
   const serviceChip = document.getElementById("service-mode");
-
+  
   // Aanbevelingen Modal
   const recommendationsModal = document.getElementById("recommendations-modal");
-  const recommendationsContainer = document.getElementById(
-    "recommendations-container",
-  );
-  const recommendationsContinue = document.getElementById(
-    "recommendations-continue",
-  );
-
+  const recommendationsContainer = document.getElementById("recommendations-container");
+  const recommendationsContinue = document.getElementById("recommendations-continue");
+  
   // IDs van aanbevolen producten
   const RECOMMENDED_IDS = [
     "drink-berry-blast",
     "snack-sweet-potato-wedges",
     "snack-falafel-bites",
-    "drink-matcha-latte",
+    "drink-matcha-latte"
   ];
 
   const CATEGORIES = [
@@ -251,12 +247,9 @@
   let selectedCategory = null;
 
   function updateServiceChip() {
-    const storedService =
-      localStorage.getItem("kiosk_service_mode") || "bestellen";
-    if (storedService === "take-away")
-      serviceChip.textContent = t("menu.service.takeAway");
-    else if (storedService === "dine-in")
-      serviceChip.textContent = t("menu.service.dineIn");
+    const storedService = localStorage.getItem("kiosk_service_mode") || "bestellen";
+    if (storedService === "take-away") serviceChip.textContent = t("menu.service.takeAway");
+    else if (storedService === "dine-in") serviceChip.textContent = t("menu.service.dineIn");
     else serviceChip.textContent = t("menu.service.default");
   }
 
@@ -305,10 +298,7 @@
     allBtn.type = "button";
     allBtn.className = "category-btn";
     allBtn.textContent = t("menu.category.all");
-    allBtn.setAttribute(
-      "aria-pressed",
-      selectedCategory === null ? "true" : "false",
-    );
+    allBtn.setAttribute("aria-pressed", selectedCategory === null ? "true" : "false");
     allBtn.addEventListener("click", () => {
       document
         .querySelectorAll(".category-list button")
@@ -324,10 +314,7 @@
       btn.type = "button";
       btn.className = "category-btn";
       btn.textContent = categoryLabel(cat);
-      btn.setAttribute(
-        "aria-pressed",
-        selectedCategory === cat ? "true" : "false",
-      );
+      btn.setAttribute("aria-pressed", selectedCategory === cat ? "true" : "false");
       btn.addEventListener("click", () => {
         document
           .querySelectorAll(".category-list button")
@@ -451,17 +438,15 @@
 
   function showRecommendations() {
     recommendationsContainer.innerHTML = "";
-
-    const recommendedProducts = PRODUCTS.filter((p) =>
-      RECOMMENDED_IDS.includes(p.id),
-    );
-
-    recommendedProducts.forEach((product) => {
+    
+    const recommendedProducts = PRODUCTS.filter(p => RECOMMENDED_IDS.includes(p.id));
+    
+    recommendedProducts.forEach(product => {
       const isInCart = cart.items[product.id];
-
+      
       const item = document.createElement("div");
       item.className = "recommendation-item";
-
+      
       const img = document.createElement("img");
       img.className = "recommendation-image";
       img.src = product.image;
@@ -469,26 +454,26 @@
       img.onerror = () => {
         img.src = "assets/logo_big_complete_transparent.png";
       };
-
+      
       const details = document.createElement("div");
       details.className = "recommendation-details";
-
+      
       const name = document.createElement("h3");
       name.className = "recommendation-name";
       name.style.margin = "0 0 6px";
       name.textContent = product.name;
-
+      
       const price = document.createElement("p");
       price.className = "recommendation-price";
       price.style.margin = "6px 0 10px 0";
       price.textContent = formatPrice(product.price);
-
+      
       const button = document.createElement("button");
       button.className = "recommendation-add-btn";
       button.type = "button";
       button.textContent = isInCart ? "✓ In cart" : t("menu.add");
       button.disabled = isInCart;
-
+      
       button.addEventListener("click", () => {
         if (!isInCart) {
           addToCart(product.id);
@@ -497,17 +482,17 @@
           }, 100);
         }
       });
-
+      
       details.appendChild(name);
       details.appendChild(price);
       details.appendChild(button);
-
+      
       item.appendChild(img);
       item.appendChild(details);
-
+      
       recommendationsContainer.appendChild(item);
     });
-
+    
     recommendationsModal.hidden = false;
   }
 
@@ -517,14 +502,12 @@
   });
 
   // Sluit modal bij backdrop klik
-  document
-    .getElementById("recommendations-modal")
-    .addEventListener("click", (e) => {
-      if (e.target.id === "recommendations-modal") {
-        recommendationsModal.hidden = true;
-        window.location.href = "cart.html";
-      }
-    });
+  document.getElementById("recommendations-modal").addEventListener("click", (e) => {
+    if (e.target.id === "recommendations-modal") {
+      recommendationsModal.hidden = true;
+      window.location.href = "cart.html";
+    }
+  });
 
   document.addEventListener("kiosk-language-changed", () => {
     updateServiceChip();

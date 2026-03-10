@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Kiosk Bestellen</title>
-    <link rel="stylesheet" href="menu.css" />
+    <link rel="stylesheet" href="styles/menu.css" />
   </head>
   <body class="kiosk-order">
     <header class="app-header" role="banner">
@@ -69,13 +69,46 @@
       </div>
     </footer>
 
+    <!-- Aanbevelingen Modal -->
+    <div id="recommendations-modal" class="recommendations-modal" hidden>
+      <div class="recommendations-backdrop"></div>
+      <div class="recommendations-dialog">
+        <h2
+          class="recommendations-title"
+          data-i18n="menu.recommendations.title"
+        >
+          Vergeet deze niet!
+        </h2>
+        <p
+          class="recommendations-subtitle"
+          data-i18n="menu.recommendations.subtitle"
+        >
+          Maak je bestelling compleet
+        </p>
+        <div
+          id="recommendations-container"
+          class="recommendations-container"
+        ></div>
+        <div class="recommendations-footer">
+          <button
+            id="recommendations-continue"
+            class="recommendations-button"
+            type="button"
+            data-i18n="menu.recommendations.continue"
+          >
+            Naar winkelwagen
+          </button>
+        </div>
+      </div>
+    </div>
+
     <noscript>
       <p class="noscript" data-i18n="menu.noscript">
         Schakel JavaScript in om te bestellen.
       </p>
     </noscript>
 
-    <script src="kiosk-language.js" defer></script>
-    <script src="menu.js" defer></script>
+    <script src="scripts/kiosk-language.js" defer></script>
+    <script src="scripts/menu.js" defer></script>
   </body>
 </html>

@@ -2,8 +2,9 @@
   "name": "7.1kioskopdracht",
   "version": "1.0.0",
   "description": "met ballie gemaakt",
-  "main": "menu.js",
+  "main": "backend/server.js",
   "scripts": {
+    "start": "node backend/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

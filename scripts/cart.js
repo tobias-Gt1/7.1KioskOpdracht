@@ -620,7 +620,7 @@
   // Netwerk Printing via PHP Backend
   async function tryNetworkPrint(printData) {
     try {
-      const response = await fetch('xprint.php', {
+      const response = await fetch('backend/xprint.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

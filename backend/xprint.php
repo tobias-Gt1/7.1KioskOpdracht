@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Xprinter Network Print Service
  * Automatische bonprinter voor kiosk
@@ -19,7 +20,8 @@ $PRINTER_HOST = getenv('PRINTER_HOST') ?: 'localhost';
 $PRINTER_PORT = getenv('PRINTER_PORT') ?: 9100;
 $PRINTER_TIMEOUT = 5;
 
-function sendResponse($success, $message = '', $error = null) {
+function sendResponse($success, $message = '', $error = null)
+{
     http_response_code($success ? 200 : 400);
     echo json_encode([
         'success' => $success,
@@ -34,7 +36,7 @@ function sendResponse($success, $message = '', $error = null) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['test'])) {
     try {
         $socket = @fsockopen($PRINTER_HOST, $PRINTER_PORT, $errno, $errstr, $PRINTER_TIMEOUT);
-        
+
         if ($socket) {
             fclose($socket);
             sendResponse(true, 'Printer bereikbaar', null);
@@ -50,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['test'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $input = json_decode(file_get_contents('php://input'), true);
-        
+
         if (!$input || !isset($input['action']) || $input['action'] !== 'print') {
             sendResponse(false, 'Ongeldige aanvraag', 'Action print vereist');
         }
@@ -60,19 +62,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $escPosReceipt = buildEscPosReceipt($input);
-        
+
         // Verstuur naar printer
         $socket = @fsockopen($PRINTER_HOST, $PRINTER_PORT, $errno, $errstr, $PRINTER_TIMEOUT);
-        
+
         if (!$socket) {
             sendResponse(false, 'Kan niet verbinden met printer', $errstr ?: 'Verbindingsfout');
         }
 
         fwrite($socket, $escPosReceipt);
         fclose($socket);
-        
+
         sendResponse(true, 'Bon succesvol geprint', null);
-        
     } catch (Exception $e) {
         sendResponse(false, 'Serverfout', $e->getMessage());
     }
@@ -81,7 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     sendResponse(false, 'Methode niet toegestaan', 'Gebruik POST');
 }
 
-function buildEscPosReceipt($data) {
+function buildEscPosReceipt($data)
+{
     $cmd = [
         'init'      => "\x1B\x40",
         'center'    => "\x1B\x61\x01",
@@ -94,14 +96,14 @@ function buildEscPosReceipt($data) {
 
     $output = $cmd['init'];
     $output .= $cmd['newline'] . $cmd['newline'];
-    
+
     // Header
     $output .= $cmd['center'] . $cmd['bold_on'];
     $output .= "Happy Herbivore" . $cmd['newline'];
     $output .= $cmd['bold_off'];
     $output .= "Healthy in a Hurry" . $cmd['newline'];
     $output .= $cmd['newline'];
-    
+
     // Ordernummer (groot en centered)
     if (isset($data['orderNumber'])) {
         $output .= $cmd['bold_on'];
@@ -109,15 +111,15 @@ function buildEscPosReceipt($data) {
         $output .= $cmd['bold_off'];
         $output .= $cmd['newline'];
     }
-    
+
     // Service info
     $output .= $cmd['left'];
-    $service = isset($data['service']) ? 
-        ($data['service'] === 'dine-in' ? 'Hier eten' : 'Meenemen') : 
+    $service = isset($data['service']) ?
+        ($data['service'] === 'dine-in' ? 'Hier eten' : 'Meenemen') :
         'Bestelling';
     $output .= "Service: " . $service . $cmd['newline'];
     $output .= str_repeat("-", 40) . $cmd['newline'];
-    
+
     // Items
     $total = 0;
     if (isset($data['items']) && is_array($data['items'])) {
@@ -127,30 +129,30 @@ function buildEscPosReceipt($data) {
             $name = str_pad($name, 23, " ");
             $price = $item['price'] * $item['quantity'];
             $priceStr = 'EUR' . str_pad(number_format($price, 2), 6, " ", STR_PAD_LEFT);
-            
+
             $output .= $qty . "x " . $name . " " . $priceStr . $cmd['newline'];
             $total += $price;
         }
     }
-    
+
     $output .= str_repeat("-", 40) . $cmd['newline'];
-    
+
     // Totaal
     if (isset($data['discount']) && $data['discount'] > 0) {
         $output .= "Korting:        EUR" . str_pad(number_format($data['discount'], 2), 6, " ", STR_PAD_LEFT) . $cmd['newline'];
         $total -= $data['discount'];
     }
-    
+
     if (isset($data['donation']) && $data['donation'] > 0) {
         $output .= "Donatie:        EUR" . str_pad(number_format($data['donation'], 2), 6, " ", STR_PAD_LEFT) . $cmd['newline'];
         $total += $data['donation'];
     }
-    
+
     $output .= $cmd['bold_on'];
     $totalStr = number_format($total, 2);
     $output .= "TOTAAL:         EUR" . str_pad($totalStr, 6, " ", STR_PAD_LEFT) . $cmd['newline'];
     $output .= $cmd['bold_off'];
-    
+
     // Footer
     $output .= $cmd['newline'];
     $output .= $cmd['center'];
@@ -158,10 +160,9 @@ function buildEscPosReceipt($data) {
     $output .= "Eet smakelijk!" . $cmd['newline'];
     $output .= $cmd['left'];
     $output .= $cmd['newline'] . $cmd['newline'] . $cmd['newline'] . $cmd['newline'];
-    
+
     // Cut paper
     $output .= $cmd['cut'];
-    
+
     return $output;
 }
-?>

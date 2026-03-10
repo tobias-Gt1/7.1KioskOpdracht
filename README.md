@@ -44,7 +44,17 @@ Een gebruiksvriendelijke bestelkiosk voor het restaurant Happy Herbivore.
 - HTML5, CSS3, Vanilla JavaScript
 - Custom font: Renos Rough
 - LocalStorage voor data persistentie
-- Modulaire language systeem (kiosk-language.js)
+- Modulaire language systeem (scripts/kiosk-language.js)
+
+## Projectstructuur
+
+- `index.html`, `menu.html`, `cart.html`: kiosk pagina's
+- `styles/`: alle CSS bestanden
+- `scripts/`: alle frontend JavaScript
+- `backend/`: API/print/database bestanden (`server.js`, `xprint.php`, `connect.php`)
+- `assets/`: afbeeldingen en logo's
+- `media/videos/`: videobestanden
+- `docs/`: documentatie
 
 ## Huisstijl
 
