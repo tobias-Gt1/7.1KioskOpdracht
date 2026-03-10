@@ -514,12 +514,203 @@
     // Show thank you screen
     thankYouScreen.hidden = false;
 
+    // Automatisch bon printen
+    printReceipt(randomOrderNumber, discountAmount, charityDonation);
+
     // After 3 seconds, redirect to home page
     setTimeout(() => {
       localStorage.removeItem("kiosk_cart");
       localStorage.removeItem("kiosk_service_mode");
       window.location.href = "index.html";
     }, 3000);
+  }
+
+  // Automatische bonprinter functionaliteit
+  async function printReceipt(orderNumber, discount, donation) {
+    // Verzamel bestellingsgegevens
+    const orderItems = Object.values(cart.items).map(item => ({
+      id: item.product.id,
+      name: item.product.name,
+      price: item.product.price,
+      quantity: item.qty
+    }));
+
+    const printData = {
+      action: 'print',
+      orderNumber: orderNumber,
+      items: orderItems,
+      service: storedService,
+      discount: discount || 0,
+      donation: donation || 0
+    };
+
+    // Probeer eerst USB printen
+    const usbSuccess = await tryUSBPrint(printData);
+    
+    // Als USB niet lukt, probeer netwerk
+    if (!usbSuccess) {
+      await tryNetworkPrint(printData);
+    }
+  }
+
+  // USB Direct Printing (WebUSB)
+  async function tryUSBPrint(printData) {
+    try {
+      if (!navigator.usb) {
+        return false;
+      }
+
+      const PRINTER_VENDORS = [
+        0x0483, // STM Microelectronics (Xprinter)
+        0x04b8, // Seiko Epson
+        0x0456, // Microtek
+        0x067b, // Prolific Technology
+      ];
+
+      // Haal geautoriseerde apparaten op
+      const devices = await navigator.usb.getDevices();
+      let printer = devices.find(device => 
+        PRINTER_VENDORS.includes(device.vendorId)
+      );
+
+      if (!printer) {
+        return false;
+      }
+
+      // Bouw ESC/POS bon
+      const receipt = buildUSBReceipt(printData);
+
+      // Open en configureer apparaat
+      await printer.open();
+      if (printer.configuration === null) {
+        await printer.selectConfiguration(1);
+      }
+
+      try {
+        await printer.claimInterface(0);
+      } catch (e) {
+        // Interface al geclaimd, doorgaan
+      }
+
+      // Verstuur naar printer
+      const encoder = new TextEncoder();
+      const intf = printer.configuration.interfaces[0].alternates[0];
+      const endpoint = intf.endpoints.find(e => e.direction === 'out');
+
+      if (!endpoint) {
+        printer.close();
+        return false;
+      }
+
+      await printer.transferOut(endpoint.endpointNumber, encoder.encode(receipt));
+
+      setTimeout(() => {
+        printer.close();
+      }, 500);
+
+      console.log('✓ Bon geprint via USB');
+      return true;
+
+    } catch (error) {
+      console.error('USB Print Error:', error);
+      return false;
+    }
+  }
+
+  // Netwerk Printing via PHP Backend
+  async function tryNetworkPrint(printData) {
+    try {
+      const response = await fetch('xprint.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(printData)
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        console.log('✓ Bon geprint via Netwerk');
+        return true;
+      } else {
+        console.error('Network print failed:', data.error);
+        return false;
+      }
+    } catch (error) {
+      console.error('Network Print Error:', error);
+      return false;
+    }
+  }
+
+  // Bouw ESC/POS bon voor USB printing
+  function buildUSBReceipt(data) {
+    const cmd = {
+      init: '\x1B\x40',
+      centerAlign: '\x1B\x61\x01',
+      leftAlign: '\x1B\x61\x00',
+      bold: '\x1B\x45\x01',
+      unbold: '\x1B\x45\x00',
+      cut: '\x1D\x56\x00'
+    };
+
+    let receipt = cmd.init;
+    receipt += '\n\n';
+    receipt += cmd.centerAlign + cmd.bold;
+    receipt += 'Happy Herbivore\n';
+    receipt += cmd.unbold;
+    receipt += 'Healthy in a Hurry\n\n';
+    
+    // Ordernummer
+    receipt += cmd.bold;
+    receipt += 'ORDER #' + data.orderNumber + '\n';
+    receipt += cmd.unbold + '\n';
+    
+    // Service
+    receipt += cmd.leftAlign;
+    const service = data.service === 'dine-in' ? 'Hier eten' : 'Meenemen';
+    receipt += 'Service: ' + service + '\n';
+    receipt += '----------------------------------------\n';
+
+    // Items
+    let total = 0;
+    data.items.forEach(item => {
+      const qty = String(item.quantity).padStart(2, ' ');
+      const name = item.name.substring(0, 23).padEnd(23, ' ');
+      const price = (item.price * item.quantity);
+      const priceStr = ('EUR' + price.toFixed(2)).padStart(9, ' ');
+      receipt += qty + 'x ' + name + ' ' + priceStr + '\n';
+      total += price;
+    });
+
+    receipt += '----------------------------------------\n';
+    
+    // Korting en donatie
+    if (data.discount > 0) {
+      receipt += 'Korting:        EUR' + data.discount.toFixed(2).padStart(6, ' ') + '\n';
+      total -= data.discount;
+    }
+    
+    if (data.donation > 0) {
+      receipt += 'Donatie:        EUR' + data.donation.toFixed(2).padStart(6, ' ') + '\n';
+      total += data.donation;
+    }
+    
+    // Totaal
+    receipt += cmd.bold;
+    receipt += 'TOTAAL:         EUR' + total.toFixed(2).padStart(6, ' ') + '\n';
+    receipt += cmd.unbold;
+    
+    // Footer
+    receipt += '\n';
+    receipt += cmd.centerAlign;
+    receipt += 'Bedankt voor uw bestelling!\n';
+    receipt += 'Eet smakelijk!\n';
+    receipt += cmd.leftAlign;
+    receipt += '\n\n\n\n';
+    receipt += cmd.cut;
+
+    return receipt;
   }
 
   charityDonateBtn.addEventListener("click", () => {
