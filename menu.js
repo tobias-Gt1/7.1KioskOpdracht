@@ -213,6 +213,10 @@
     if (!rawValue) return "";
     if (/^https?:\/\//i.test(rawValue)) return rawValue;
     if (rawValue.startsWith("/")) return `http://localhost:3000${rawValue}`;
+    // Handle both 'assets/file.png' and 'file.png'
+    if (rawValue.startsWith("assets/")) {
+      return `http://localhost:3000/${rawValue}`;
+    }
     return `http://localhost:3000/assets/${rawValue}`;
   }
 
@@ -434,8 +438,9 @@
   async function init() {
     try {
       await loadProductsFromApi();
+      console.log("✓ Producten geladen van API/database");
     } catch (error) {
-      console.warn("API niet beschikbaar, fallback op lokale productlijst.", error);
+      console.warn("⚠ API/database niet bereikbaar. Placeholder foto's uit assets gebruiken:", error.message);
       categories = [...DEFAULT_CATEGORIES];
       products = [...FALLBACK_PRODUCTS];
     }
